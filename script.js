@@ -14,11 +14,12 @@ const lowerCase = "abcdefghijklmnopqrstuvwxyz";
 const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const number = "0123456789";
 
-// List of special characters for passwords from 
+// List of special characters for passwords from
 // https://owasp.org/www-community/password-special-characters
 const specialChar = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 
-const charArray = [lowerCase, upperCase, number, specialChar];
+// TODO: Make this a variable based on user input
+const passwordChars = lowerCase + upperCase + number + specialChar;
 const minNumber = 8;
 const maxNumber = 128;
 
@@ -27,9 +28,8 @@ function generatePassword() {
   let password = "";
 
   for (let index = 0; index < maxNumber; index++) {
-    // Pick a random character from a random character class
-    let charClass = charArray[Math.floor(Math.random() * charArray.length)];
-    let char = charClass[Math.floor(Math.random() * charClass.length)];
+    // Pick a random character from the string
+    let char = passwordChars[Math.floor(Math.random() * passwordChars.length)];
     password += char;
   }
 
