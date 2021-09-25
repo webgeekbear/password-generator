@@ -6,17 +6,20 @@ function writePassword() {
   passwordText.value = password;
 }
 
-// Character classes for passwords
-const lowerCase = "abcdefghijklmnopqrstuvwxyz";
-const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const number = "0123456789";
+function getPasswordChars() {
+  // Character classes for passwords
+  const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+  const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
 
-// List of special characters for passwords from
-// https://owasp.org/www-community/password-special-characters
-const specialChar = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+  // List of special characters for passwords from
+  // https://owasp.org/www-community/password-special-characters
+  const specialChars = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 
-// TODO: Make this a variable based on user input
-const passwordChars = lowerCase + upperCase + number + specialChar;
+  let passwordChars = lowerCase + upperCase + numbers + specialChars;
+
+  return passwordChars;
+}
 
 // Determine if the string passed in is a valid number
 // From https://stackoverflow.com/questions/175739/
@@ -46,7 +49,7 @@ function promptPasswordLength() {
       alert(value + " is not numeric.");
     } else {
       int = parseInt(value);
-      if ((int < minNumberChars) || (int > maxNumberChars)) {
+      if (int < minNumberChars || int > maxNumberChars) {
         alert(
           "Password length must be between " +
             minNumberChars +
@@ -71,6 +74,7 @@ function promptPasswordLength() {
 // Generate a password given user input
 function generatePassword() {
   let length = promptPasswordLength();
+  let passwordChars = getPasswordChars();
 
   let password = "";
 
