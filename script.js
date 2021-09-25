@@ -1,4 +1,4 @@
-// Write password to the #password input
+// Write password to the #password field
 function writePassword() {
   let password = generatePassword();
   let passwordText = document.querySelector("#password");
@@ -17,8 +17,6 @@ const specialChar = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 
 // TODO: Make this a variable based on user input
 const passwordChars = lowerCase + upperCase + number + specialChar;
-const minNumber = 8;
-const maxNumber = 128;
 
 // Determine if the string passed in is a valid number
 // From https://stackoverflow.com/questions/175739/
@@ -29,14 +27,18 @@ function isNumeric(str) {
 
   return (
     !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-    !isNaN(parseInt(str))
-  ); // ...and ensure strings of whitespace fail
+    !isNaN(parseInt(str)) // ...and ensure strings of whitespace fail
+  );
 }
 
-// Prompt for the length of the password to generate
+// (Prompt for the length) of the password to generate.
+// Inform the user and return 0 if user cancels or enters an invalid number
 function promptPasswordLength() {
+  const minNumberChars = 8;
+  const maxNumberChars = 128;
+
   let int = 0;
-  let value = prompt("How long should the password be?", "8");
+  let value = prompt("How long should the password be?", minNumberChars);
 
   // If the user didn't cancel
   if (value != null) {
@@ -44,8 +46,15 @@ function promptPasswordLength() {
       alert(value + " is not numeric.");
     } else {
       int = parseInt(value);
-      if (int < 8 || int > 128) {
-        alert("Password length must be between 8 and 128.");
+      if ((int < minNumberChars) || (int > maxNumberChars)) {
+        alert(
+          "Password length must be between " +
+            minNumberChars +
+            " and " +
+            maxNumberChars +
+            "."
+        );
+
         int = 0; // Signal failure
       }
     }
