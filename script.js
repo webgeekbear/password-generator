@@ -38,23 +38,22 @@ function promptPasswordLength() {
   let int = 0;
   let value = prompt("How long should the password be?", "8");
 
+  // If the user didn't cancel
   if (value != null) {
     if (!isNumeric(value)) {
       alert(value + " is not numeric.");
     } else {
       int = parseInt(value);
       if (int < 8 || int > 128) {
-        alert(
-          "Password length must be between 8 and 128. Password generation cancelled."
-        );
+        alert("Password length must be between 8 and 128.");
         int = 0; // Signal failure
       }
     }
+  }
 
-    // Alert the user that password generation was cancelled.
-    if (!int) {
-      alert("Password generation cancelled.");
-    }
+  // Alert the user that password generation was cancelled.
+  if (!int) {
+    alert("Password generation cancelled.");
   }
 
   return int;
