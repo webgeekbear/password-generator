@@ -6,7 +6,7 @@ function writePassword() {
   passwordText.value = password;
 }
 
-function getPasswordChars() {
+function promptPasswordChars() {
   // Character classes for passwords
   const lowerCase = "abcdefghijklmnopqrstuvwxyz";
   const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -16,7 +16,27 @@ function getPasswordChars() {
   // https://owasp.org/www-community/password-special-characters
   const specialChars = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 
-  let passwordChars = lowerCase + upperCase + numbers + specialChars;
+  let passwordChars = "";
+
+  if (confirm("Use lower case characters?")) {
+    passwordChars += lowerCase;
+  }
+
+  if (confirm("Use upper case characters?")) {
+    passwordChars += upperCase;
+  }
+
+  if (confirm("Use numbers?")) {
+    passwordChars += numbers;
+  }
+
+  if (confirm("Use special characters?")) {
+    passwordChars += specialChars;
+  }
+
+  if (!passwordChars.length) {
+    alert("No characters selected for password.");
+  }
 
   return passwordChars;
 }
@@ -63,21 +83,22 @@ function promptPasswordLength() {
     }
   }
 
-  // Alert the user that password generation was cancelled.
-  if (!int) {
-    alert("Password generation cancelled.");
-  }
-
   return int;
 }
 
 // Generate a password given user input
 function generatePassword() {
   let length = promptPasswordLength();
-  let passwordChars = getPasswordChars();
+  let passwordChars = promptPasswordChars();
+
+  if (!length || !passwordChars.length) {
+    alert("Password generation cancelled.");
+    length = 0; // Clears the generated password box
+  }
 
   let password = "";
 
+  // Note that in the special case where length is 0, nothing happens here!
   for (let index = 0; index < length; index++) {
     // Pick a random character from the list of password chars and append it to password
     let char = passwordChars[Math.floor(Math.random() * passwordChars.length)];
