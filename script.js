@@ -88,8 +88,11 @@ function promptPasswordLength() {
 
 // Generate a password given user input
 function generatePassword() {
+  let passwordChars = "";
   let length = promptPasswordLength();
-  let passwordChars = promptPasswordChars();
+  if (length) {
+    passwordChars = promptPasswordChars();
+  }
 
   if (!length || !passwordChars.length) {
     alert("Password generation cancelled.");
