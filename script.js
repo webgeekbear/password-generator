@@ -1,13 +1,3 @@
-// Write password to the #password field
-//
-// An empty password will clear the #password field.
-function writePassword() {
-  let password = generatePassword();
-  let passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
-}
-
 // Create the object for a character class
 //
 // The use of randomPos will, at worst, force each of the character classes
@@ -171,6 +161,16 @@ function getPasswordChar(index, passwordChars) {
 
   // Pick a random character from that string and return it
   return str[Math.floor(Math.random() * str.length)];
+}
+
+// Write password to the #password field
+//
+// An empty password will clear the #password field.
+function writePassword() {
+  let password = generatePassword();
+  let passwordText = document.querySelector("#password");
+
+  passwordText.value = password;
 }
 
 // Get reference to the #generate element
