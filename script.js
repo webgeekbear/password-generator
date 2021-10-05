@@ -1,15 +1,24 @@
-// Create the object for a character class
-//
-// The use of randomPos will, at worst, force each of the character classes
-// to be used as the last N characters of the password, where N is the
-// number of character classes.  This class should be called once per
-// character class, with an increasing arrayLength starting at 0.
-//
-// This code assumes that 0 < # of character classes < password length
+/**
+ * 
+ * @param { string } charClass Character class (string of chars in class)
+ * @param { int } passwordLength Password length
+ * @param { int } arrayLength Array length
+ * @returns Object for character class
+ * 
+ * Create the object for a character class
+ * 
+ * The use of randomPos will, at worst, force each of the character classes
+ * to be used as the last N or first N characters of the password, where N is the
+ * number of character classes.  This class should be called once per 
+ * character class, with an increasing arrayLength starting at 0.
+ * 
+ * This code assumes that 0 < # of character classes < password length and that array 
+ * length starts at zero and grows by one at each call.
+ */
 function createCharClassObj(charClass, passwordLength, arrayLength) {
   let charClassObj = {
     chars: charClass,
-    // Force generation of character class at a random position
+    // Force generation of character class at a random position if not used
     randomPos: Math.floor(Math.random() * (passwordLength - arrayLength)),
     used: false, // Keep track of whether this class has been used
   };
@@ -28,49 +37,43 @@ function promptPasswordChars(length) {
   // https://owasp.org/www-community/password-special-characters
   const specialChars = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 
-  let passwordChars = [];
+  let passwordCharsArray = [];
 
   if (confirm("Use lower case characters?")) {
-    let lowerCaseObj = createCharClassObj(
-      lowerCase,
-      length,
-      passwordChars.length
-    );
-    passwordChars.push(lowerCaseObj);
+    let lowerCaseObj = createCharClassObj(lowerCase, length, passwordCharsArray);
+    passwordCharsArray.push(lowerCaseObj);
   }
 
   if (confirm("Use upper case characters?")) {
-    let upperCaseObj = createCharClassObj(
-      upperCase,
-      length,
-      passwordChars.length
-    );
-    passwordChars.push(upperCaseObj);
+    let upperCaseObj = createCharClassObj(upperCase, length, passwordCharsArray);
+    passwordCharsArray.push(upperCaseObj);
   }
 
   if (confirm("Use numbers?")) {
-    let numbersObj = createCharClassObj(numbers, length, passwordChars.length);
-    passwordChars.push(numbersObj);
+    let numbersObj = createCharClassObj(numbers, length, passwordCharsArray);
+    passwordCharsArray.push(numbersObj);
   }
 
   if (confirm("Use special characters?")) {
-    let specialCharsObj = createCharClassObj(
-      specialChars,
-      length,
-      passwordChars.length
-    );
-    passwordChars.push(specialCharsObj);
+    let specialCharsObj = createCharClassObj(specialChars, length, passwordCharsArray);
+    passwordCharsArray.push(specialCharsObj);
   }
 
-  if (!passwordChars.length) {
+  if (!passwordCharsArray.length) {
     alert("No character classes selected for password.");
   }
 
-  return passwordChars;
+  return passwordCharsArray;
 }
 
-// Determine if the string passed in is a valid number
-// From https://stackoverflow.com/questions/175739/
+/**
+ * 
+ * @param { string } str String to test
+ * @returns true if a number, false if not
+ * 
+ * Determine if the string passed in is a valid number
+ * From https://stackoverflow.com/questions/175739/
+ */
 function isNumeric(str) {
   if (typeof str != "string") {
     str = "" + str; // we only process strings!
@@ -82,8 +85,10 @@ function isNumeric(str) {
   );
 }
 
-// (Prompt for the length) of the password to generate.
-// Inform the user and return 0 if user cancels or enters an invalid number
+/**
+ * 
+ * @returns Length of password to generate, 0 if user cancels or enters an invalid number
+ */
 function promptPasswordLength() {
   const minNumberChars = 8;
   const maxNumberChars = 128;
@@ -98,13 +103,7 @@ function promptPasswordLength() {
     } else {
       int = parseInt(value);
       if (int < minNumberChars || int > maxNumberChars) {
-        alert(
-          "Password length must be between " +
-            minNumberChars +
-            " and " +
-            maxNumberChars +
-            "."
-        );
+        alert("Password length must be between " + minNumberChars + " and " + maxNumberChars + ".");
 
         int = 0; // Signal failure
       }
@@ -137,7 +136,14 @@ function generatePassword() {
   return password;
 }
 
-// Get a password character from passwordChars
+/**
+ * 
+ * @param { int } index current index of string to generate
+ * @param { array of passwordCharObj } passwordChars Password char object array
+ * @returns one character 
+ * 
+ * Get a password character from passwordChars
+ */
 function getPasswordChar(index, passwordChars) {
   let charClass = -1;
 
@@ -163,9 +169,11 @@ function getPasswordChar(index, passwordChars) {
   return str[Math.floor(Math.random() * str.length)];
 }
 
-// Write password to the #password field
-//
-// An empty password will clear the #password field.
+/**
+ * Generate password and display it to the #password field.
+ * 
+ * An empty string will clear the field.
+ */
 function writePassword() {
   let password = generatePassword();
   let passwordText = document.querySelector("#password");
