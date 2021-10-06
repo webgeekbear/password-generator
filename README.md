@@ -6,4 +6,4 @@
 This application is deployed at https://webgeekbear.github.io/password-generator/
 
 ## Screenshot
-![App screenshot](./password-generator.png)
+![App screenshot](./assets/images/password-generator.png)
